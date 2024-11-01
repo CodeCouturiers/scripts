@@ -11,7 +11,6 @@
 
 (function() {
     'use strict';
-const translations = {
    const translations = {
     // Верхнее меню и навигация
     "请登录": "Войти",
