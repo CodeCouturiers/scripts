@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Claude Professional Dark Theme
 // @namespace    http://tampermonkey.net/
-// @version      1.0.3
+// @version      1.0.4
 // @description  Professional dark theme for Claude.ai with improved contrast and visual hierarchy
 // @author       Your name
 // @match        https://claude.ai/*
@@ -31,6 +31,8 @@
             --dark-shadow: rgba(0, 0, 0, 0.2);
             --dark-code-bg: #282c34;
             --dark-code-text: #abb2bf;
+            --dark-bg-overlay: rgba(44, 46, 51, 0.95);
+            --dark-hover-overlay: rgba(49, 51, 56, 0.95);
         }
 
         /* Global Styles */
@@ -67,25 +69,84 @@
             margin: 1rem 0 !important;
             border-radius: 8px !important;
             overflow: hidden !important;
+            position: relative !important;
         }
 
-        /* Code Language Label */
+        /* Copy Button Container */
+        .pointer-events-none.sticky {
+            position: absolute !important;
+            top: 0 !important;
+            right: 0 !important;
+            padding: 8px !important;
+            z-index: 10 !important;
+            display: flex !important;
+            justify-content: flex-end !important;
+            width: 100% !important;
+            background: linear-gradient(to left, var(--dark-code-bg) 40%, transparent) !important;
+        }
+
+        /* Copy Button */
+        .pointer-events-auto {
+            backdrop-filter: blur(8px) !important;
+            -webkit-backdrop-filter: blur(8px) !important;
+            background: var(--dark-bg-overlay) !important;
+            border-radius: 6px !important;
+            transition: all 0.2s ease !important;
+        }
+
+        .pointer-events-auto:hover {
+            background: var(--dark-hover-overlay) !important;
+        }
+
+        /* Copy Button Inner */
+        .pointer-events-auto button {
+            background: transparent !important;
+            border: none !important;
+            padding: 6px 10px !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 4px !important;
+            color: var(--dark-text-secondary) !important;
+            font-size: 12px !important;
+            transition: all 0.2s ease !important;
+        }
+
+        .pointer-events-auto button:hover {
+            color: var(--dark-text-primary) !important;
+            background: transparent !important;
+        }
+
+        /* Language Label */
         .text-text-300.absolute {
             color: var(--dark-text-secondary) !important;
-            background: var(--dark-code-bg) !important;
+            background: transparent !important;
+            padding: 8px 12px !important;
+            font-size: 12px !important;
+            opacity: 0.8 !important;
             z-index: 1 !important;
         }
 
-        /* Code Block */
+        /* Code Grid Layout */
         .code-block__code {
+            display: grid !important;
+            grid-template-columns: minmax(0, 1fr) !important;
+            gap: 0 !important;
+            padding: 2rem 1rem 1rem !important;
+            margin: 0 !important;
+            min-width: 0 !important;
+            overflow-x: auto !important;
             background: var(--dark-code-bg) !important;
             color: var(--dark-code-text) !important;
             font-family: 'Fira Code', 'JetBrains Mono', monospace !important;
-            padding: 1.5rem 1rem 1rem !important;
-            margin: 0 !important;
-            border: none !important;
-            border-radius: 0 !important;
             font-weight: normal !important;
+            border: none !important;
+        }
+
+        /* Code Block Scrolling */
+        .code-block__code pre {
+            overflow-x: auto !important;
+            scrollbar-width: thin !important;
+            margin: 0 !important;
         }
 
         /* Code Inside Code Blocks */
@@ -94,12 +155,6 @@
             padding: 0 !important;
             border: none !important;
             font-family: inherit !important;
-        }
-
-        /* Copy Button */
-        .pointer-events-auto button {
-            background: var(--dark-bg-tertiary) !important;
-            border: 1px solid var(--dark-border) !important;
         }
 
         /* Highlighted Text */
@@ -113,6 +168,26 @@
             border-radius: 0.3rem !important;
             font-size: 0.9rem !important;
             opacity: 0.85 !important;
+        }
+
+        /* Small Scrollbars for Code Blocks */
+        .code-block__code::-webkit-scrollbar {
+            height: 6px !important;
+            width: 6px !important;
+        }
+
+        .code-block__code::-webkit-scrollbar-track {
+            background: var(--dark-code-bg) !important;
+        }
+
+        .code-block__code::-webkit-scrollbar-thumb {
+            background: var(--dark-bg-tertiary) !important;
+            border-radius: 3px !important;
+            border: none !important;
+        }
+
+        .code-block__code::-webkit-scrollbar-corner {
+            background: transparent !important;
         }
 
         /* Sidebar Navigation */
@@ -169,8 +244,8 @@
             outline: none !important;
         }
 
-        /* Buttons */
-        button {
+        /* Regular Buttons */
+        button:not(.pointer-events-auto button) {
             background: var(--dark-bg-tertiary) !important;
             color: var(--dark-text-primary) !important;
             border: 1px solid var(--dark-border) !important;
@@ -179,12 +254,12 @@
             transition: all 0.2s ease !important;
         }
 
-        button:hover {
+        button:not(.pointer-events-auto button):hover {
             background: var(--dark-bg-hover) !important;
             border-color: var(--dark-accent) !important;
         }
 
-        button:active {
+        button:not(.pointer-events-auto button):active {
             transform: translateY(1px) !important;
         }
 
@@ -200,7 +275,7 @@
             text-decoration: underline !important;
         }
 
-        /* Scrollbars */
+        /* Regular Scrollbars */
         ::-webkit-scrollbar {
             width: 12px !important;
             height: 12px !important;
@@ -274,6 +349,7 @@
         .fade-in {
             animation: fadeIn 0.3s ease-in-out;
         }
+
     `;
 
     // Insert style as early as possible
