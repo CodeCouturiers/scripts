@@ -1,3 +1,6 @@
+# pip install dnspython python-whois requests pyOpenSSL
+
+
 import socket
 import dns.resolver
 import whois
