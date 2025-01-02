@@ -1,19 +1,19 @@
 // Получаем все внешние CSS файлы
-const stylesheets = Array.from(document.styleSheets)
-    .filter(stylesheet => stylesheet.href)
-    .map(stylesheet => stylesheet.href);
+const externalCSSFiles = Array.from(document.styleSheets)
+    .filter(styleSheet => styleSheet.href)
+    .map(styleSheet => styleSheet.href);
 
 // Получаем все внешние JavaScript файлы
-const scripts = Array.from(document.scripts)
-    .filter(script => script.src)
-    .map(script => script.src);
+const externalJSFiles = Array.from(document.scripts)
+    .filter(scriptElement => scriptElement.src)
+    .map(scriptElement => scriptElement.src);
 
 // Выводим результаты
 console.log('Внешние CSS файлы:');
-stylesheets.forEach(href => console.log(href));
+externalCSSFiles.forEach(cssFile => console.log(cssFile));
 
 console.log('\nВнешние JavaScript файлы:');
-scripts.forEach(src => console.log(src));
+externalJSFiles.forEach(jsFile => console.log(jsFile));
 
 // Выводим общее количество
-console.log(`\nВсего найдено:\nCSS файлов: ${stylesheets.length}\nJavaScript файлов: ${scripts.length}`);
+console.log(`\nВсего найдено:\nCSS файлов: ${externalCSSFiles.length}\nJavaScript файлов: ${externalJSFiles.length}`);
